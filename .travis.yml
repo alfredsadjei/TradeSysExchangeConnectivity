@@ -6,7 +6,7 @@ jdk:
 script:
   - /gradlew build --scan -s
 
-sudo: true
+#sudo: true
 
 before_install: chmod +x gradlew
 
