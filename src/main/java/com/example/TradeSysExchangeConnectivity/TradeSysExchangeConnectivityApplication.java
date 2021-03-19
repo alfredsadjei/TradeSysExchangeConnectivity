@@ -9,17 +9,17 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @SpringBootApplication
-@RestController
-@RequestMapping(path = "api/v1/exchange")
+//@RestController
+//@RequestMapping(path = "api/v1/exchange")
 public class TradeSysExchangeConnectivityApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(TradeSysExchangeConnectivityApplication.class, args);
 	}
-
-	@GetMapping
-	public List<String> testExchange(){
-		return List.of("Hello" , "Exchange");
-	}
+//
+//	@GetMapping
+//	public List<String> testExchange(){
+//		return List.of("Hello" , "Exchange");
+//	}
 
 }
