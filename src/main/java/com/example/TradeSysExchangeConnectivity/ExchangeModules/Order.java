@@ -1,5 +1,19 @@
 package com.example.TradeSysExchangeConnectivity.ExchangeModules;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.springframework.beans.factory.annotation.Autowired;
+
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Order {
     private String id;
     private String product;
@@ -7,16 +21,6 @@ public class Order {
     private double price;
     private String side;
 
-    public Order() {
-    }
-
-    public Order(String id, String product, int quantity, double price, String side) {
-        this.id = id;
-        this.product = product;
-        this.quantity = quantity;
-        this.price = price;
-        this.side = side;
-    }
 
     public String getId() {
         return id;
@@ -58,14 +62,4 @@ public class Order {
         this.side = side;
     }
 
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id='" + id + '\'' +
-                ", product='" + product + '\'' +
-                ", quantity=" + quantity +
-                ", price=" + price +
-                ", side='" + side + '\'' +
-                '}';
-    }
 }

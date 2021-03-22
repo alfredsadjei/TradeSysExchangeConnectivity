@@ -1,5 +1,15 @@
 package com.example.TradeSysExchangeConnectivity.ExchangeModules;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PendingOrder {
     private String product;
     private int quantity;
@@ -8,17 +18,6 @@ public class PendingOrder {
     private int cumulativeQuantity;
     private String exchange;
 
-    public PendingOrder() {
-    }
-
-    public PendingOrder(String product, int quantity, double price, String side, int cumulativeQuantity, String exchange) {
-        this.product = product;
-        this.quantity = quantity;
-        this.price = price;
-        this.side = side;
-        this.cumulativeQuantity = cumulativeQuantity;
-        this.exchange = exchange;
-    }
 
     public String getProduct() {
         return product;
@@ -68,15 +67,4 @@ public class PendingOrder {
         this.exchange = exchange;
     }
 
-    @Override
-    public String toString() {
-        return "PendingOrder{" +
-                "product='" + product + '\'' +
-                ", quantity=" + quantity +
-                ", price=" + price +
-                ", side='" + side + '\'' +
-                ", cumulativeQuantity=" + cumulativeQuantity +
-                ", exchange='" + exchange + '\'' +
-                '}';
-    }
 }
