@@ -49,7 +49,7 @@ public class ExchangeOne implements Runnable {
             if(pendingOrders == null)
                 System.out.println("Pending orders null");
             for (PendingOrder pendingOrder : pendingOrders) {
-                pendingOrder.setExchange("exchange1");
+                pendingOrder.setExchange("pending");
             }
             jedis.lpush(orderBook.getId() + "orderbook",Utility.convertToString(pendingOrders));
         }
