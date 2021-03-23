@@ -7,7 +7,7 @@ import com.example.TradeSysExchangeConnectivity.ExchangeModules.PendingOrder;
 import org.springframework.web.reactive.function.client.WebClient;
 import redis.clients.jedis.Jedis;
 
-public class ExchangeOne implements Runnable {
+public class ExchangeOne implements ApplicationRunner {
     Jedis jedis = new Jedis();
 
     @Override
@@ -55,4 +55,3 @@ public class ExchangeOne implements Runnable {
         }
     }
 }
-
