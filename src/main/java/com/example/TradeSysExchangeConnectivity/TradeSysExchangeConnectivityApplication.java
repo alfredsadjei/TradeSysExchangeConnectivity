@@ -28,7 +28,7 @@ public class TradeSysExchangeConnectivityApplication {
 
 		MakeOrder makeOrder = new MakeOrder();
 		Thread makeOrderThread = new Thread(makeOrder);
-		makeOrderThread.start();
+		makeOrderThread.start(); //Can't run code in main after SpringApplication.run is called.
 	}
 
 }
