@@ -1,4 +1,4 @@
-package com.example.TradeSysExchangeConnectivity.Config;
+package com.example.TradeSysExchangeConnectivity;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
