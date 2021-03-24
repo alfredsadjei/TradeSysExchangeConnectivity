@@ -1,20 +1,12 @@
-com/example/TradeSysExchangeConnectivity/ExchangeModules/Order.java
- com.example.TradeSysExchangeConnectivity.ExchangeModules.Order
-com/example/TradeSysExchangeConnectivity/Config/Utility.java
- com.example.TradeSysExchangeConnectivity.Config.Utility
-com/example/TradeSysExchangeConnectivity/ExchangeModules/PendingOrder.java
- com.example.TradeSysExchangeConnectivity.ExchangeModules.PendingOrder
-com/example/TradeSysExchangeConnectivity/ExchangeModules/OrderBook.java
- com.example.TradeSysExchangeConnectivity.ExchangeModules.OrderBook
-com/example/TradeSysExchangeConnectivity/Exchange/MakeOrder.java
- com.example.TradeSysExchangeConnectivity.Exchange.MakeOrder
-com/example/TradeSysExchangeConnectivity/Exchange/ExchangeOne.java
- com.example.TradeSysExchangeConnectivity.Exchange.ExchangeOne
-com/example/TradeSysExchangeConnectivity/ExchangeConnectivityRedisClient.java
- com.example.TradeSysExchangeConnectivity.ExchangeConnectivityRedisClient
-com/example/TradeSysExchangeConnectivity/Config/RedisConfiguration.java
- com.example.TradeSysExchangeConnectivity.Config.RedisConfiguration
+com/example/TradeSysExchangeConnectivity/Utility.java
+ com.example.TradeSysExchangeConnectivity.Utility
+com/example/TradeSysExchangeConnectivity/RedisClient.java
+ com.example.TradeSysExchangeConnectivity.RedisClient
+com/example/TradeSysExchangeConnectivity/RedisServer.java
+ com.example.TradeSysExchangeConnectivity.RedisServer
 com/example/TradeSysExchangeConnectivity/TradeSysExchangeConnectivityApplication.java
  com.example.TradeSysExchangeConnectivity.TradeSysExchangeConnectivityApplication
-com/example/TradeSysExchangeConnectivity/Config/RedisServer.java
- com.example.TradeSysExchangeConnectivity.Config.RedisServer
+com/example/TradeSysExchangeConnectivity/MakeOrder.java
+ com.example.TradeSysExchangeConnectivity.MakeOrder
+com/example/TradeSysExchangeConnectivity/Order.java
+ com.example.TradeSysExchangeConnectivity.Order
