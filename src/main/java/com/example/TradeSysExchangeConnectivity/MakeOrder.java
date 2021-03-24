@@ -19,19 +19,17 @@ public class MakeOrder implements ApplicationRunner {
         while (true) {
             String data = jedis.lpop("orderCreatedQ");
 
-
             System.out.println(data);
-            String order2 = Utility.convertToString(data);
-            System.out.println(order2);
 
             Order order = Utility.convertToObject(data, Order.class);
-            String orderId = webClient.post().uri("/" + key + "/order")
+            String orderId = webClient.post()
+                    .uri("/" + key + "/order")
                     .body(Mono.just(order), Order.class)
                     .retrieve()
                     .bodyToMono(String.class)
                     .block();
             System.out.println(data);
-            System.out.println("Order placed successfully, orderId: " + orderId);
+            System.out.println("Order Successful: " + orderId);
 //            jedis.del("data");
         }
     }
