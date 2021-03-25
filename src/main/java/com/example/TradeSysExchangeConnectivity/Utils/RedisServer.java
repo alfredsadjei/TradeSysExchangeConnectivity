@@ -1,4 +1,4 @@
-package com.example.TradeSysExchangeConnectivity;
+package com.example.TradeSysExchangeConnectivity.Utils;
 
 public enum RedisServer {
     SERVER_KEY("EWbpysz7KwsBbFo4xXBvQ5qx2IwWKlOH");

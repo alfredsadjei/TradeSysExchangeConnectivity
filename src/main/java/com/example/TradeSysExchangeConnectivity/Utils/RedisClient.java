@@ -1,5 +1,6 @@
-package com.example.TradeSysExchangeConnectivity;
+package com.example.TradeSysExchangeConnectivity.Utils;
 
+import com.example.TradeSysExchangeConnectivity.Utils.RedisServer;
 import redis.clients.jedis.Jedis;
 
 public class RedisClient {
