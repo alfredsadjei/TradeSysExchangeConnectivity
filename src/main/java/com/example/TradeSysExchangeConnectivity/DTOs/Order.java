@@ -1,4 +1,4 @@
-package com.example.TradeSysExchangeConnectivity;
+package com.example.TradeSysExchangeConnectivity.DTOs;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
