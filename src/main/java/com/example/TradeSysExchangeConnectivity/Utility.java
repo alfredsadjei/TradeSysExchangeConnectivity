@@ -10,8 +10,6 @@ public class Utility {
         T t = null;
         try {
             t = objectMapper.readValue(data, type);
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
