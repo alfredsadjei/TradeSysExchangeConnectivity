@@ -5,6 +5,8 @@ import com.example.TradeSysExchangeConnectivity.DTOs.Order;
 import com.example.TradeSysExchangeConnectivity.Utils.ExchangeConnectivityService;
 import com.example.TradeSysExchangeConnectivity.DTOs.ExchangeOrder;
 import com.example.TradeSysExchangeConnectivity.Utils.RedisClient;
+import com.example.TradeSysExchangeConnectivity.Utils.RedisServer;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -37,13 +39,12 @@ public class MakeOrder implements ApplicationRunner {
                 if (jedis.lindex("orderCreatedQ",0) != null){
 
                     String data = jedis.lpop("orderCreatedQ");
-
                     System.out.println(data);
 
                     //convert to POJO
                     ExchangeOrder exOrder = Utility.convertToObject(data, ExchangeOrder.class);
 
-                    Order strippedExOrder = this.strip(exOrder);
+
 
                     String orderId;
                     Call<String> getOrderID;
@@ -57,7 +58,8 @@ public class MakeOrder implements ApplicationRunner {
 
                         ExchangeConnectivityService ecService = retrofit.create(ExchangeConnectivityService.class);
 
-                        getOrderID = ecService.sendOrder(strippedExOrder);
+                        getOrderID = ecService.sendOrder(new Order(exOrder.getProductName(), exOrder.getQuantity(),
+                                exOrder.getPrice(),exOrder.getSide()));
                     }else {
 
                         //retrofit web client
@@ -68,21 +70,37 @@ public class MakeOrder implements ApplicationRunner {
 
                         ExchangeConnectivityService ecService = retrofit.create(ExchangeConnectivityService.class);
 
-                        getOrderID = ecService.sendOrder(strippedExOrder);
+                        getOrderID = ecService.sendOrder(new Order(exOrder.getProductName(), exOrder.getQuantity(),
+                                exOrder.getPrice(),exOrder.getSide()));
+
                     }
+
 
                     orderId = getOrderID.execute().body();
 
-                    System.out.println("Order Successful: " + orderId);
+                    Jedis jedis = new Jedis("redis-17849.c59.eu-west-1-2.ec2.cloud.redislabs.com",17849);
+                    jedis.auth(RedisServer.SERVER_KEY.getKeyVal());
+                    jedis.publish("saveOrder", stringifyOrder(orderId,exOrder));
                 }
             }
 
-            private Order strip(ExchangeOrder exOrder) {
-                return new Order(exOrder.getTicker(),  exOrder.getQuantity(),exOrder.getPrice(), exOrder.getSide());
+
+            @SneakyThrows
+            private String stringifyOrder(String orderId, ExchangeOrder exOrder){
+
+                ObjectMapper objectMapper = new ObjectMapper();
+
+
+                return  objectMapper.writeValueAsString(new ExchangeOrder(orderId,
+                        exOrder.getProductName(),
+                        exOrder.getPrice(), exOrder.getQuantity(), exOrder.getSide()));
+
+
             }
+
         };
 
-        final ScheduledFuture<?> queueHandler = scheduler.scheduleWithFixedDelay(queuePopper,1,1, TimeUnit.SECONDS);
+        final ScheduledFuture<?> queueHandler = scheduler.scheduleWithFixedDelay(queuePopper,500,500, TimeUnit.MILLISECONDS);
 
     }
 
