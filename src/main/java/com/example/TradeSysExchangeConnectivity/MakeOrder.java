@@ -5,6 +5,7 @@ import com.example.TradeSysExchangeConnectivity.DTOs.Order;
 import com.example.TradeSysExchangeConnectivity.Utils.ExchangeConnectivityService;
 import com.example.TradeSysExchangeConnectivity.DTOs.ExchangeOrder;
 import com.example.TradeSysExchangeConnectivity.Utils.RedisClient;
+import lombok.SneakyThrows;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -13,70 +14,77 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+
 @Component
 public class MakeOrder implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-
-        //String key = "3af0d829-27ac-4dc5-a605-feef97d4a072";
-
-        //WebClient webClient = WebClient.create("https://exchange.matraining.com");
-
-
-
+        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        //creating a jedis instance
         Jedis jedis = RedisClient.connect();
 
-        while (true) {
-            //pop from queue only if there is something to pop
-            if (jedis.lindex("orderCreatedQ",0) != null){
+        Runnable queuePopper = new Runnable() {
+            @SneakyThrows
+            @Override
+            public void run() {
+                //pop from queue only if there is something to pop
+                if (jedis.lindex("orderCreatedQ",0) != null){
 
-                String data = jedis.lpop("orderCreatedQ");
-                System.out.println(data);
+                    String data = jedis.lpop("orderCreatedQ");
 
-                //convert to POJO
-                ExchangeOrder exOrder = Utility.convertToObject(data, ExchangeOrder.class);
+                    System.out.println(data);
 
-                Order strippedExOrder = this.strip(exOrder);
+                    //convert to POJO
+                    ExchangeOrder exOrder = Utility.convertToObject(data, ExchangeOrder.class);
 
-                String orderId;
-                Call<String> getOrderID;
+                    Order strippedExOrder = this.strip(exOrder);
 
-            if(exOrder.getExchange().equalsIgnoreCase("ex1")){
-                //retrofit web client
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("https://exchange.matraining.com")
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
+                    String orderId;
+                    Call<String> getOrderID;
 
-                ExchangeConnectivityService ecService = retrofit.create(ExchangeConnectivityService.class);
+                    if(exOrder.getExchange().equalsIgnoreCase("ex1")){
+                        //retrofit web client
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl("https://exchange.matraining.com")
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
 
-                getOrderID = ecService.sendOrder(strippedExOrder);
-            }else {
+                        ExchangeConnectivityService ecService = retrofit.create(ExchangeConnectivityService.class);
 
-                //retrofit web client
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("https://exchange2.matraining.com")
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
+                        getOrderID = ecService.sendOrder(strippedExOrder);
+                    }else {
 
-                ExchangeConnectivityService ecService = retrofit.create(ExchangeConnectivityService.class);
+                        //retrofit web client
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl("https://exchange2.matraining.com")
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
 
-                getOrderID = ecService.sendOrder(strippedExOrder);
+                        ExchangeConnectivityService ecService = retrofit.create(ExchangeConnectivityService.class);
+
+                        getOrderID = ecService.sendOrder(strippedExOrder);
+                    }
+
+                    orderId = getOrderID.execute().body();
+
+                    System.out.println("Order Successful: " + orderId);
+                }
             }
 
-            orderId = getOrderID.execute().body();
-
-            System.out.println("Order Successful: " + orderId);
+            private Order strip(ExchangeOrder exOrder) {
+                return new Order(exOrder.getTicker(),  exOrder.getQuantity(),exOrder.getPrice(), exOrder.getSide());
             }
+        };
 
+        final ScheduledFuture<?> queueHandler = scheduler.scheduleWithFixedDelay(queuePopper,1,1, TimeUnit.SECONDS);
 
-        }
     }
 
-    private Order strip(ExchangeOrder exOrder){
-        return new Order(exOrder.getTicker(),  exOrder.getQuantity(),exOrder.getPrice(), exOrder.getSide());
-    }
 }
 
