@@ -1,18 +1,43 @@
 package com.example.TradeSysExchangeConnectivity.DTOs;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ExchangeOrder {
-    private String ticker;
+    private String orderId;
+    private String productName;
     private double price;
     private int quantity;
     private String side;
     private String exchange;
 
-    public String getTicker() {
-        return ticker;
+    public ExchangeOrder(String orderId, String productName, double price, int quantity, String side) {
+        this.orderId = orderId;
+        this.productName = productName;
+        this.price = price;
+        this.quantity = quantity;
+        this.side = side;
     }
 
-    public void setTicker(String ticker) {
-        this.ticker = ticker;
+    public ExchangeOrder(){
+
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String ticker) {
+        this.productName = ticker;
     }
 
     public double getPrice() {
@@ -47,14 +72,12 @@ public class ExchangeOrder {
         this.exchange = exchange;
     }
 
-    @Override
-    public String toString() {
-        return "ExchangeOrder{" +
-                "ticker='" + ticker + '\'' +
-                ", price=" + price +
-                ", quantity=" + quantity +
-                ", side='" + side + '\'' +
-                ", exchange='" + exchange + '\'' +
-                '}';
+    public ExchangeOrder(String orderId, String productName, double price, int quantity, String side, String exchange) {
+        this.orderId = orderId;
+        this.productName = productName;
+        this.price = price;
+        this.quantity = quantity;
+        this.side = side;
+        this.exchange = exchange;
     }
 }

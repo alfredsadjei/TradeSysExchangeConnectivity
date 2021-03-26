@@ -1,5 +1,6 @@
 package com.example.TradeSysExchangeConnectivity.Utils;
 
+import com.example.TradeSysExchangeConnectivity.DTOs.ExchangeOrder;
 import com.example.TradeSysExchangeConnectivity.DTOs.Order;
 import retrofit2.Call;
 import retrofit2.http.Body;
